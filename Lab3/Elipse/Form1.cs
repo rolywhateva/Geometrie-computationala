@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Security.Cryptography;
 namespace Elipse
 {
     public partial class Form1 : Form
@@ -27,54 +27,104 @@ namespace Elipse
             Box.Image = map;
 
         }
-
+        Random rnd = new Random();
         private void Draw_Click(object sender, EventArgs e)
         {
             
             int elipsaWidth = 200;
             int elipsaHeight = 100;
-            Point center = new Point(0, 0);
+            PointF center = new PointF(0, 0);
             grpObj.DrawEllipse(new Pen(Color.Black),center.X -elipsaWidth/2, center.Y - elipsaHeight/2,elipsaWidth,elipsaHeight);
+            grpObj.DrawRectangle(new Pen(Color.Black), center.X - elipsaWidth / 2, center.Y - elipsaHeight / 2, elipsaWidth, elipsaHeight);
             grpObj.DrawEllipse(new Pen(Color.Red), new Rectangle(new Point(0,0), new Size(10,10)));
             grpObj.FillEllipse(new SolidBrush(Color.Red), new Rectangle(new Point(0,0), new Size(10, 10)));
             Box.Image = map;
-            Point rp = new Point();
-            float b = elipsaHeight * elipsaHeight / 4;
-            float a = elipsaWidth;
+            PointF rp = new PointF();
+        
+            double a = elipsaWidth / 2;
+            double b = (elipsaHeight * elipsaHeight) / 4;
+           double c =(float)Math.Sqrt(elipsaHeight/ (4 * a));
+      
+            PointF FLeft = new PointF((float)(-c),0);
+            PointF FRight = new PointF((float)(c),0);
+            grpObj.DrawEllipse(new Pen(Color.Red), new RectangleF(FLeft, new SizeF(3, 3)));
+            grpObj.DrawEllipse(new Pen(Color.Red), new RectangleF(FRight, new SizeF(3, 3)));
+            grpObj.FillEllipse(new SolidBrush(Color.Red), new RectangleF(FLeft, new SizeF(3, 3)));
+            grpObj.FillEllipse(new SolidBrush(Color.Red), new RectangleF(FRight, new SizeF(3, 3)));
+            
+    float   limity = (int)Math.Sqrt(a * a - c * c);
             int numar;
-            Random rnd = new Random();
-            List<Point> points = new List<Point>();
+            List<PointF> points = new List<PointF>();
+             
+      
             for (int i = 0; i < 100; i++)
             {
                 do
                 {
-                    rp.X = rnd.Next() %(int) a;
-                    rp.Y = rnd.Next() % (int)b;
-                    numar = rnd.Next() % 2;
-                    if (numar % 2 == 0)
-                        rp.X = rp.X * (-1);
-                    if (numar % 3 == 0)
-                        rp.Y = rp.Y * (-1);
-                    
-                } while ((rp.X * rp.X) / (a * a) + (rp.Y * rp.Y) / (b * b) > 1&&!validate(points,rp));
+
+                    /*
+                    rp.X =(float)( RandomFloat() * (2 * a) - a);
+                    rp.Y = (float)(RandomFloat() * (2 * limity) - limity);
+                    */
+
+                   /*
+                    rp.X = (float)(rnd.NextDouble() * a - a/2);
+                    rp.Y = (float)(rnd.NextDouble() * (limity) - limity/2);
+                    */
+                   
+                   
+                     rp.X = (float)(rnd.Next(-(int)a, (int)a)*rnd.NextDouble());
+                     rp.Y = (float)((rnd.Next(-(int)limity/2 , (int)limity/2))*rnd.NextDouble());
+                     
+
+
+                } while (Distanta(FRight,rp)+Distanta(FLeft,rp)-2.0*a>=0|| (rp.X*rp.X)/(a*a)+(rp.Y*rp.Y)/(b*b)-1>=0/*||!validate(points,rp)*/);
                 points.Add(rp);
-                grpObj.DrawEllipse(new Pen(Color.Blue), new Rectangle(rp, new Size(3, 3)));
-                grpObj.FillEllipse(new SolidBrush(Color.Blue), new Rectangle(rp, new Size(3, 3)));
+              
+                    grpObj.DrawEllipse(new Pen(Color.Blue), new RectangleF(rp, new SizeF(3, 3)));
+                    grpObj.FillEllipse(new SolidBrush(Color.Blue), new RectangleF(rp, new SizeF(3, 3)));
+                
+                }
+            for (int i = 0; i < points.Count; i++)
+            {
+                rp = points[i];
+                if ((rp.X * rp.X) / (a * a) + (rp.Y * rp.Y) / (b * b) >= 1)
+
+                {
+                    grpObj.DrawEllipse(new Pen(PictureBox.DefaultBackColor), new RectangleF(rp, new SizeF(3, 3)));
+                    grpObj.FillEllipse(new SolidBrush(PictureBox.DefaultBackColor), new RectangleF(rp, new SizeF(3, 3)));
+                }
             }
                 Box.Image = map;
 
 
         }
-        private double Distanta(Point a, Point b)
+        private double Distanta(PointF a, PointF b)
         {
             return Math.Sqrt((b.Y - a.Y) * (b.Y - a.Y) + (b.X - a.X) * (b.X - a.X));
         }
-        private bool validate(List<Point> p,Point a)
+        private bool validate(List<PointF> p,PointF a)
         {
             for (int i = 0; i < p.Count; i++)
-                if (Distanta(a, p[i]) <=5)
+                if (p[i].Equals(a))
                     return false;
             return true;
+        }
+        private float RandomFloat()
+        {
+            try
+            {
+                byte[] data = new byte[4];
+                RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+                rng.GetBytes(data);
+                return BitConverter.ToSingle(data, 0);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return 0;
+      
         }
     }
 }
