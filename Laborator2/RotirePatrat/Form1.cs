@@ -75,7 +75,7 @@ namespace RotirePatrat
             PointF position = new PointF(e.X, e.Y);
             if (ContainsPoint(points,e.Location))
             {
-                 MessageBox.Show($"{position.ToString()}");
+               //  MessageBox.Show($"{position.ToString()}");
                 grp.Clear(pictureBox.BackColor);
                 Pen pen = new Pen(Color.Red);
                 SolidBrush b = new SolidBrush(Color.Red);
@@ -85,9 +85,9 @@ namespace RotirePatrat
                  grp.TranslateTransform(bmp.Width / 2, bmp.Height / 2);
 
                 m.TransformPoints(points);
-                  m.RotateAt(-10f, new Point(bmp.Width / 2, bmp.Height / 2));
+                  m.RotateAt(10f, new Point(bmp.Width / 2, bmp.Height / 2));
                 for (int i = 0; i < points.Length; i++)
-                    points[i] = RotatePoint(points[i], -10f, new Point(bmp.Width / 2, bmp.Height / 2));
+                    points[i] = RotatePoint(points[i], 10f, new Point(bmp.Width / 2, bmp.Height / 2));
                 angle += 10;
                 grp.Transform = m;
 
