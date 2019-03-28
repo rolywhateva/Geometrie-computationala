@@ -1,4 +1,4 @@
-﻿namespace RotirePatrat
+﻿namespace Triunghi
 {
     partial class Form1
     {
@@ -34,22 +34,20 @@
             // 
             // pictureBox
             // 
-            this.pictureBox.Location = new System.Drawing.Point(1, 0);
+            this.pictureBox.Location = new System.Drawing.Point(0, 1);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(844, 594);
+            this.pictureBox.Size = new System.Drawing.Size(798, 449);
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
-            this.pictureBox.Click += new System.EventHandler(this.pictureBox_Click);
-            this.pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseClick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(847, 631);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.pictureBox);
             this.Name = "Form1";
-            this.Text = "Rotire Patrat";
+            this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);

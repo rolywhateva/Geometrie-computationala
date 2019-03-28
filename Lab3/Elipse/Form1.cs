@@ -30,17 +30,17 @@ namespace Elipse
         Random rnd = new Random();
         private void Draw_Click(object sender, EventArgs e)
         {
-            
+              grpObj.Clear(PictureBox.DefaultBackColor);
             int elipsaWidth = 200;
             int elipsaHeight = 100;
             PointF center = new PointF(0, 0);
             grpObj.DrawEllipse(new Pen(Color.Black),center.X -elipsaWidth/2, center.Y - elipsaHeight/2,elipsaWidth,elipsaHeight);
-            grpObj.DrawRectangle(new Pen(Color.Black), center.X - elipsaWidth / 2, center.Y - elipsaHeight / 2, elipsaWidth, elipsaHeight);
+         //   grpObj.DrawRectangle(new Pen(Color.Black), center.X - elipsaWidth / 2, center.Y - elipsaHeight / 2, elipsaWidth, elipsaHeight);
             grpObj.DrawEllipse(new Pen(Color.Red), new Rectangle(new Point(0,0), new Size(10,10)));
             grpObj.FillEllipse(new SolidBrush(Color.Red), new Rectangle(new Point(0,0), new Size(10, 10)));
             Box.Image = map;
             PointF rp = new PointF();
-        
+         
             double a = elipsaWidth / 2;
             double b = (elipsaHeight * elipsaHeight) / 4;
            double c =(float)Math.Sqrt(elipsaHeight/ (4 * a));
