@@ -62,16 +62,6 @@ namespace Elipse
                 do
                 {
 
-                    /*
-                    rp.X =(float)( RandomFloat() * (2 * a) - a);
-                    rp.Y = (float)(RandomFloat() * (2 * limity) - limity);
-                    */
-
-                   /*
-                    rp.X = (float)(rnd.NextDouble() * a - a/2);
-                    rp.Y = (float)(rnd.NextDouble() * (limity) - limity/2);
-                    */
-                   
                    
                      rp.X = (float)(rnd.Next(-(int)a, (int)a)*rnd.NextDouble());
                      rp.Y = (float)((rnd.Next(-(int)limity/2 , (int)limity/2))*rnd.NextDouble());
@@ -85,6 +75,7 @@ namespace Elipse
                     grpObj.FillEllipse(new SolidBrush(Color.Blue), new RectangleF(rp, new SizeF(3, 3)));
                 
                 }
+            /*
             for (int i = 0; i < points.Count; i++)
             {
                 rp = points[i];
@@ -95,6 +86,7 @@ namespace Elipse
                     grpObj.FillEllipse(new SolidBrush(PictureBox.DefaultBackColor), new RectangleF(rp, new SizeF(3, 3)));
                 }
             }
+            */
                 Box.Image = map;
 
 
