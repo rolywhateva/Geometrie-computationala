@@ -142,23 +142,23 @@ namespace AcopeririConvexe
             b.X = aux.X; b.Y = aux.Y;
             
         }
-        private Point[] Graham(Point[] points)
+        private List<Point> Graham(List<Point> points)
         {
             int index = 0;
-            for (int i = 1; i < points.Length; i++)
+            for (int i = 1; i < points.Count; i++)
                 if (points[i].X < points[index].X || 
                     (points[i].X == points[index].X && points[i].Y > points[index].Y))
                     index = i;
            Swap( points[0], points[index]);            
-            for (int i = 1; i < points.Length-1; i++)
+            for (int i = 1; i < points.Count-1; i++)
             {
                 float pantai = Panta(points[i], points[0]);
-                for (int j = i + 1; j < points.Length; j++)
+                for (int j = i + 1; j < points.Count; j++)
 
                     if (pantai >Panta(points[j], points[0]))
                     {
                         MessageBox.Show(points[i].ToString() + points[j].ToString());
-                        points.
+                       
                         Swap( points[i], points[j]);
                         MessageBox.Show(points[i].ToString() + points[j].ToString());
                         pantai = Panta(points[i], points[0]);
