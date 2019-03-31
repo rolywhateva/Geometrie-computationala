@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -51,7 +52,7 @@ namespace AcopeririConvexe
                 grp.FillEllipse(new SolidBrush(pen.Color), p.X, p.Y, pointWidth, pointWidth);
 
             }
-            List<Point> CHS = new List<Point>(Graham(points));
+            List<Point> CHS = Graham( points.ToArray());
            
             for (int i = 0; i < CHS.Count - 1; i++)
             {
@@ -79,7 +80,7 @@ namespace AcopeririConvexe
             return toReturn;
 
         }
-        private float Panta(Point A, Point B)
+         public  float Panta(Point A, Point B)
         {
             return (B.Y - (float)A.Y) / (B.X - A.X);
         }
@@ -142,18 +143,19 @@ namespace AcopeririConvexe
             b.X = aux.X; b.Y = aux.Y;
             
         }
-        private List<Point> Graham(List<Point> points)
+        private List<Point> Graham(Point[] points)
         {
             int index = 0;
-            for (int i = 1; i < points.Count; i++)
+            for (int i = 1; i < points.Length; i++)
                 if (points[i].X < points[index].X || 
                     (points[i].X == points[index].X && points[i].Y > points[index].Y))
                     index = i;
+            
            Swap( points[0], points[index]);            
-            for (int i = 1; i < points.Count-1; i++)
+            for (int i = 1; i < points.Length-1; i++)
             {
                 float pantai = Panta(points[i], points[0]);
-                for (int j = i + 1; j < points.Count; j++)
+                for (int j = i + 1; j < points.Length; j++)
 
                     if (pantai >Panta(points[j], points[0]))
                     {
@@ -165,21 +167,27 @@ namespace AcopeririConvexe
                     }
 
             }
-            points.Insert(0, points[points.Count - 1]);
+            Array.Resize(ref points, points.Length + 1);
+            for (int i = points.Length-1; i > 0; i--)
+                points[i] = points[i - 1];
+            points[0] = points[points.Length];
+       
+        
             int nrPuncte = 2;
-            for(int i=3;i<points.Count;i++)
+            for(int i=3;i<points.Length;i++)
             {
                 while (nrPuncte > 1 && Orientare(points[nrPuncte - 1], points[nrPuncte], points[i]) > 0)
                     nrPuncte--;
                 nrPuncte++;
                 Swap(points[nrPuncte],  points[i]);
             }
-            return points.GetRange(0, nrPuncte+1);
+            Array.Resize(ref points, nrPuncte);
+            return points.ToList();
            
            
 
         }
-
+     
         private float Orientare(Point A, Point B, Point C)
         {
             double temp = (B.Y - A.Y) * (C.X - A.X) - (C.Y - A.Y) * (B.X - A.X);
