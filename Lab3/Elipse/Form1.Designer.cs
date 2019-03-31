@@ -37,7 +37,7 @@
             // 
             this.Box.Location = new System.Drawing.Point(1, -29);
             this.Box.Name = "Box";
-            this.Box.Size = new System.Drawing.Size(912, 639);
+            this.Box.Size = new System.Drawing.Size(927, 639);
             this.Box.TabIndex = 0;
             this.Box.TabStop = false;
             // 
