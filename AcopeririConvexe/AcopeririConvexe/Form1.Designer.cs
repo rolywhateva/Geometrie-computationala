@@ -67,7 +67,7 @@
             // 
             this.NumericUpNrPuncte.Location = new System.Drawing.Point(229, 7);
             this.NumericUpNrPuncte.Maximum = new decimal(new int[] {
-            500,
+            1000,
             0,
             0,
             0});

@@ -137,13 +137,6 @@ namespace AcopeririConvexe
             return CHS;
 
 
-
-
-
-
-
-
-
         }
         public void Swap( ref Point a, ref  Point b)
         {
@@ -158,41 +151,12 @@ namespace AcopeririConvexe
         {
             int index = 0;
             for (int i = 1; i < points.Length; i++)
-               //  if (points[i].X < points[index].X || 
-               //  (points[i].X == points[index].X && points[i].Y > points[index].Y))
                if (points[i].Y < points[index].Y ||
                   (points[i].Y == points[index].Y && points[i].X < points[index].X))
                   index = i;
-            
-           Swap(ref  points[0],ref  points[index]);            
-            for (int i = 1; i < points.Length-1; i++)
-            {
-                float pantaiX = points[0].X - points[i].X;
-                float pantaiY = points[0].Y - points[i].Y;
-                  //  Panta(points[i], points[0]);
-                for (int j = i + 1; j < points.Length; j++)
-                {
-                    float pantajX = points[0].X - points[j].X;
-                    float pantajY = points[0].Y - points[j].Y;
-                       // Panta(points[j], points[0]);
-                    if (pantaiY*pantajX>pantajY*pantaiX /*||(pantaiX * pantajY == pantajX * pantaiY && Distance(points[j],points[0])>Distance(points[i],points[0]))*/)
-                    {
-                        //MessageBox.Show(points[i].ToString() + points[j].ToString());
-
-                        Swap(ref points[i], ref points[j]);
-                        //  MessageBox.Show(points[i].ToString() + points[j].ToString());
-                        pantaiX = points[0].X - points[i].X;
-                        pantaiY = points[0].Y - points[i].Y;
-                    }
-                }
-
-            }
-            Array.Resize(ref points, points.Length + 1);
-          
-                for (int i = points.Length - 1; i > 0; i--)
-                    points[i] = points[i - 1];
-                points[0] = points[points.Length-1];
-          
+            Swap(ref points[0], ref points[index]);
+            Sort(points);
+           Insert(ref points); 
             int nrPuncte = 2;
             for(int i=3;i<points.Length;i++)
             {
@@ -201,15 +165,36 @@ namespace AcopeririConvexe
                 nrPuncte++;
                 Swap(ref points[nrPuncte],  ref points[i]);
             }
-           
             Array.Resize(ref points, nrPuncte+1);
-
             return points.ToList();
-           
-           
-
         }
-     
+         private void Sort(Point[] points)
+        {
+            for (int i = 1; i < points.Length - 1; i++)
+            {
+                float pantaiX = points[0].X - points[i].X;
+                float pantaiY = points[0].Y - points[i].Y;
+                for (int j = i + 1; j < points.Length; j++)
+                {
+                    float pantajX = points[0].X - points[j].X;
+                    float pantajY = points[0].Y - points[j].Y;
+                    if (pantaiY * pantajX > pantajY * pantaiX)
+                    {
+                        Swap(ref points[i], ref points[j]);
+                        pantaiX = points[0].X - points[i].X;
+                        pantaiY = points[0].Y - points[i].Y;
+                    }
+                }
+            }
+        }
+        private void Insert(ref Point[] points)
+        {
+            Array.Resize(ref points, points.Length + 1);
+
+            for (int i = points.Length - 1; i > 0; i--)
+                points[i] = points[i - 1];
+            points[0] = points[points.Length - 1];
+        }
         private float Orientare(Point A, Point B, Point C)
         {
             double temp = (B.Y - A.Y) * (C.X - A.X) - (C.Y - A.Y) * (B.X - A.X);
