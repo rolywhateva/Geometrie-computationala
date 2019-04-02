@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
 
 namespace AcopeririConvexe
 {
@@ -20,6 +21,7 @@ namespace AcopeririConvexe
         Graphics grp;
         Bitmap map;
         int NrPuncte;
+        int hullcounter = 0;
         //  List<Point> points = new List<Point>();
         Random rnd = new Random((int)System.DateTime.Now.Ticks);
         int pointWidth = 3;
@@ -29,6 +31,7 @@ namespace AcopeririConvexe
             grp = Graphics.FromImage(map);
             grp.DrawLine(new Pen(Color.Black), 100, 200, 100, 300);
             box.Image = map;
+
         }
 
         private void buttonGenerate_Click(object sender, EventArgs e)
@@ -43,15 +46,20 @@ namespace AcopeririConvexe
             List<Point> points = new List<Point>();
             // points.Clear();
             Pen pen;
+            
+            int X = 10, Y = 10;
             for (int i = 0; i < NrPuncte; i++)
             {
-                Point p = nextRandomPoint(points);
+                Point p =nextRandomPoint(points);
                 points.Add(p);
                 pen = new Pen(RandomColor(), pointWidth);
                 grp.DrawEllipse(pen, p.X, p.Y, pointWidth, pointWidth);
                 grp.FillEllipse(new SolidBrush(pen.Color), p.X, p.Y, pointWidth, pointWidth);
 
             }
+            
+          
+
             List<Point> CHS = Graham( points.ToArray());
            
             for (int i = 0; i < CHS.Count - 1; i++)
@@ -60,6 +68,8 @@ namespace AcopeririConvexe
             }
             grp.DrawLine(new Pen(Color.Black), CHS[0], CHS[CHS.Count - 1]);
             box.Image = map;
+            hullcounter++;
+            map.Save("hull"+hullcounter+".jpeg", ImageFormat.Jpeg);
 
         }
         private Point nextRandomPoint(List<Point> points)
@@ -135,53 +145,65 @@ namespace AcopeririConvexe
 
 
         }
-        public void Swap( Point a,  Point b)
+        public void Swap( ref Point a, ref  Point b)
         {
             Point aux = new Point();
-            aux.X = a.X; aux.Y = a.Y;
-            a.X = b.X;a.Y = b.Y;
-            b.X = aux.X; b.Y = aux.Y;
+            aux = a;
+            a = b;
+            b = aux;
+              
             
         }
         private List<Point> Graham(Point[] points)
         {
             int index = 0;
             for (int i = 1; i < points.Length; i++)
-                if (points[i].X < points[index].X || 
-                    (points[i].X == points[index].X && points[i].Y > points[index].Y))
-                    index = i;
+               //  if (points[i].X < points[index].X || 
+               //  (points[i].X == points[index].X && points[i].Y > points[index].Y))
+               if (points[i].Y < points[index].Y ||
+                  (points[i].Y == points[index].Y && points[i].X < points[index].X))
+                  index = i;
             
-           Swap( points[0], points[index]);            
+           Swap(ref  points[0],ref  points[index]);            
             for (int i = 1; i < points.Length-1; i++)
             {
-                float pantai = Panta(points[i], points[0]);
+                float pantaiX = points[0].X - points[i].X;
+                float pantaiY = points[0].Y - points[i].Y;
+                  //  Panta(points[i], points[0]);
                 for (int j = i + 1; j < points.Length; j++)
-
-                    if (pantai >Panta(points[j], points[0]))
+                {
+                    float pantajX = points[0].X - points[j].X;
+                    float pantajY = points[0].Y - points[j].Y;
+                       // Panta(points[j], points[0]);
+                    if (pantaiY*pantajX>pantajY*pantaiX /*||(pantaiX * pantajY == pantajX * pantaiY && Distance(points[j],points[0])>Distance(points[i],points[0]))*/)
                     {
-                        MessageBox.Show(points[i].ToString() + points[j].ToString());
-                       
-                        Swap( points[i], points[j]);
-                        MessageBox.Show(points[i].ToString() + points[j].ToString());
-                        pantai = Panta(points[i], points[0]);
+                        //MessageBox.Show(points[i].ToString() + points[j].ToString());
+
+                        Swap(ref points[i], ref points[j]);
+                        //  MessageBox.Show(points[i].ToString() + points[j].ToString());
+                        pantaiX = points[0].X - points[i].X;
+                        pantaiY = points[0].Y - points[i].Y;
                     }
+                }
 
             }
             Array.Resize(ref points, points.Length + 1);
-            for (int i = points.Length-1; i > 0; i--)
-                points[i] = points[i - 1];
-            points[0] = points[points.Length];
-       
-        
+          
+                for (int i = points.Length - 1; i > 0; i--)
+                    points[i] = points[i - 1];
+                points[0] = points[points.Length-1];
+          
             int nrPuncte = 2;
             for(int i=3;i<points.Length;i++)
             {
-                while (nrPuncte > 1 && Orientare(points[nrPuncte - 1], points[nrPuncte], points[i]) > 0)
+                while (nrPuncte >1 && Orientare(points[nrPuncte - 1], points[nrPuncte], points[i]) >=0)
                     nrPuncte--;
                 nrPuncte++;
-                Swap(points[nrPuncte],  points[i]);
+                Swap(ref points[nrPuncte],  ref points[i]);
             }
-            Array.Resize(ref points, nrPuncte);
+           
+            Array.Resize(ref points, nrPuncte+1);
+
             return points.ToList();
            
            
