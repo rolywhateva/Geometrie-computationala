@@ -20,6 +20,7 @@ namespace Triunghi
         Bitmap bmp;
         PointF p1, p2, p3;
         Random rnd = new Random((int)System.DateTime.Now.Ticks);
+    
         private void Form1_Load(object sender, EventArgs e)
         {
             
@@ -150,22 +151,27 @@ namespace Triunghi
         }
         #endregion
         #region Mediana
-        public void  Mediana(PointF A, PointF B, PointF C,Color color )
+        public PointF  Mediana(PointF A, PointF B, PointF C,Color color )
         {
             PointF MijBC = Mijloc(B, C);
             Pen p = new Pen(Color.Orange, 5);
+
             grp.DrawLine(p, A, MijBC);
+            return MijBC;
         }
         public void DeseneazaMediane(PointF A, PointF B, PointF C,Color color)
         {
-            Mediana(A, B, C, color);
-            Mediana(B, A, C, color);
-            Mediana(C, A, B, color);
+          PointF mbc=  Mediana(A, B, C, color);
+          PointF mac=  Mediana(B, A, C, color);
+          PointF mab=  Mediana(C, A, B, color);
+            PointF inter  = Intersectie(C, mab, A, Panta(A, mbc));
+          
+
            
         }
         #endregion
         #region Bisectoare
-        private void Bisectoare(PointF A, PointF B, PointF C,Color color )
+        private float  Bisectoare(PointF A, PointF B, PointF C,Color color )
         {
             float ia, ja, ib, jb;
             ia = B.X - A.X;
@@ -184,7 +190,8 @@ namespace Triunghi
             PointF inter = Intersectie(B, C, A, Panta(A, bis));
             Pen p = new Pen(color, 5);
           
-            grp.DrawLine(new Pen(color, 5), A, bis);
+            grp.DrawLine(new Pen(color, 5), A, inter );
+            return Panta(A, inter);
 
 
 
@@ -200,6 +207,7 @@ namespace Triunghi
 
 
                 Bisectoare(B, A, C, color);
+               
                 Bisectoare(A, B, C, color);
                 Bisectoare(C,A,B, color);
             }
