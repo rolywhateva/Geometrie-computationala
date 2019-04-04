@@ -31,7 +31,7 @@ namespace Triunghi
             labelAB.Visible = labelBC.Visible = labelAC.Visible = false;
           
             grp = Graphics.FromImage(bmp);
-           grp.TranslateTransform(bmp.Width / 2, bmp.Height / 2);
+          // grp.TranslateTransform(bmp.Width / 2, bmp.Height / 2);
             // DrawTriunghi();
          
            // grp.ResetTransform();
@@ -48,11 +48,16 @@ namespace Triunghi
             } while (invalidTriunghi(p1,p2,p3));
             grp.DrawPolygon(new Pen(Color.Black), new PointF[] { p1, p2, p3 });
             if (BoxLiniiMijlocii.Checked)
-                DeseneazaLiniiMijlocii(p1, p2, p3, Color.Yellow);
+                DeseneazaLiniiMijlocii(p1, p2, p3, Color.Moccasin);
             if (BoxMediana.Checked)
                 DeseneazaMediane(p1, p2, p3, Color.Orange);
-            DeseneazaBisectoare(p1, p2, p3, Color.Green);
-            
+            // DeseneazaBisectoare(p1, p2, p3, Color.Green);
+            if (BoxInaltime.Checked)
+                DeseneazaInaltime(p1, p2, p3, Color.Red);
+            if (BoxMediatoare.Checked)
+                DeseneazaMediatoare(p1, p2, p3, Color.MediumSeaGreen);
+            if (BoxBisectoare.Checked)
+                DeseneazaBisectoare(p1, p2, p3, Color.MediumPurple);
             pictureBox.Image = bmp;
 
         }
@@ -96,8 +101,8 @@ namespace Triunghi
 
         private  PointF RandomPoint()
         {
-            int randomX = rnd.Next(-pictureBox.Width / 2, pictureBox.Width / 2) % (pictureBox.Width / 2);
-            int randomY = rnd.Next(-pictureBox.Height / 2, pictureBox.Height / 2) % (pictureBox.Height / 2);
+            int randomX = rnd.Next(0, pictureBox.Width) ;
+            int randomY = rnd.Next(0 ,pictureBox.Height) ;
             return new PointF(randomX, randomY);
         }
         private  float Panta(PointF A, PointF B)
@@ -160,24 +165,30 @@ namespace Triunghi
         }
         #endregion
         #region Bisectoare
-        private void Bisectoare(PointF B, PointF A, PointF C,Color color )
+        private void Bisectoare(PointF A, PointF B, PointF C,Color color )
         {
-            float Aleft = Panta(B, A), Aright = Panta(A, C);
-            float Bleft, BRight;
-            Bleft = BRight = -1;
-            float Cleft, Cright;
-            Cleft = Aleft * A.X + A.Y;
-            Cright = Aright * A.X + A.Y;
-            float tleft, tright;
-            tleft = (float)Math.Sqrt(Aleft * Aleft + Cleft * Cleft);
-            tright = (float)Math.Sqrt(Aright * Aright + Cright * Cright);
-            float pantabisectoare = (-tleft * Aright - tright * Aleft) / (tright * Aleft + tleft * BRight);
-            //   float nbisectoare = -(tleft * Cright - tright * Cleft) / (tright * Bleft - tleft * BRight);
-            float p2 = (Aleft*tright + Aright*tleft) / (-tright * Bleft - tleft * BRight);
-            PointF Inter = Intersectie(B, C, A, p2);
-           
+            float ia, ja, ib, jb;
+            ia = B.X - A.X;
+            ja = B.Y - A.Y;
+            ib = C.X - A.X;
+            jb = C.Y - A.Y;
+            float modA = (float)Math.Sqrt(ia * ia + ja * ja);
+            float modb = (float)Math.Sqrt(ib * ib + jb * jb);
+            float ic, jc;
+            ic = modb * ia + modA * ib;
+            jc = modb * ja + modA * jb;
+            float xbis, ybis;
+            xbis = ic + A.X;
+            ybis = jc + A.Y;
+            PointF bis = new PointF(xbis, ybis);
+            PointF inter = Intersectie(B, C, A, Panta(A, bis));
+            Pen p = new Pen(color, 5);
+          
+            grp.DrawLine(new Pen(color, 5), A, bis);
 
-            grp.DrawLine(new Pen(color), A, Inter);
+
+
+            // grp.DrawLine(new Pen(color), A, Inter);
 
 
         }
@@ -190,7 +201,7 @@ namespace Triunghi
 
                 Bisectoare(B, A, C, color);
                 Bisectoare(A, B, C, color);
-                Bisectoare(A,C,B, color);
+                Bisectoare(C,A,B, color);
             }
         }
         private PointF Intersectie(PointF b, PointF c, PointF a, float panta)
@@ -213,6 +224,37 @@ namespace Triunghi
 
         }
         #endregion
+        public void  Inaltime(PointF A , PointF B, PointF C, Color color)
+        {
+            float pantaBC = Panta(B, C);
+            float pantaAH = -1 / pantaBC;
+            PointF H = Intersectie(B,C,A, pantaAH);
+            grp.DrawLine(new Pen(color,5),A,H);
+        }
+        public void DeseneazaInaltime(PointF A, PointF B, PointF C, Color color )
+        {
+            Inaltime(A, B, C, color);
+            Inaltime(C, A, B, color);
+            Inaltime(B, A, C, color);
+        }
+        public void Mediatoare(PointF A, PointF B, Color color )
+        {
+            PointF MijAB = Mijloc(A, B);
+            float pantaMed = -1 / Panta(A, B);
+            PointF ExA, ExB;
+            ExA = new PointF(-1000, pantaMed * (-1000) - pantaMed * MijAB.X + MijAB.Y);
+            ExB = new PointF(1000, pantaMed * (1000) - pantaMed * MijAB.X + MijAB.Y);
+            Pen p = new Pen(color, 5);
+            p.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
+            grp.DrawLine(p, ExA, ExB);
+
+        }
+        public void DeseneazaMediatoare(PointF A, PointF B,PointF C, Color color)
+        {
+            Mediatoare(A, B, color);
+            Mediatoare(B, C, color);
+            Mediatoare(A, C, color);
+        }
 
     }
 }
