@@ -255,7 +255,7 @@ namespace Triunghi
             Inaltime(C, A, B, color);
             Inaltime(B, A, C, color);
         }
-        public void Mediatoare(PointF A, PointF B, PointF C,Color color )
+        public PointF Mediatoare(PointF A, PointF B, PointF C,Color color )
         {
             PointF MijAB = Mijloc(A, B);
             float pantaMed = -1 / Panta(A, B);
@@ -268,20 +268,24 @@ namespace Triunghi
 
             PointF inter2 = new PointF();
             inter1= Intersectie(B, C, MijAB, pantaMed);
-           // inter2  = Intersectie(A, C, MijAB, pantaMed);
+           inter2  = Intersectie(A, C, MijAB, pantaMed);
 
-          //  PointF inter = (distanta(A, inter1) < distanta(A, inter2)) ? inter1 : inter2;
+           PointF inter = (distanta(A, inter1) < distanta(A, inter2)) ? inter1 : inter2;
          
             Pen p = new Pen(color, 5);
          //   p.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
-            grp.DrawLine(p, MijAB, inter1);
+            grp.DrawLine(p, MijAB, inter);
+            return inter;
 
         }
         public void DeseneazaMediatoare(PointF A, PointF B,PointF C, Color color)
         {
-            Mediatoare(A, B,C, color);
-            Mediatoare(B, C,A, color);
-            Mediatoare(A, C,B, color);
+            PointF amed= Mediatoare(A, B,C, color);
+           PointF bmed = Mediatoare(B, C,A, color);
+           PointF cmed =  Mediatoare(A, C,B, color);
+            PointF O = Intersectie(B, bmed, A, Panta(A, amed));
+            grp.DrawString("O", new Font(FontFamily.GenericSerif, 30, FontStyle.Regular), new SolidBrush(color), O);
+
         }
 
     }
