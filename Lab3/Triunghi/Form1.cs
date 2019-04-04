@@ -48,6 +48,9 @@ namespace Triunghi
                 p3 = RandomPoint();
             } while (invalidTriunghi(p1,p2,p3));
             grp.DrawPolygon(new Pen(Color.Black), new PointF[] { p1, p2, p3 });
+            grp.DrawString("A", new Font(FontFamily.GenericSerif, 30, FontStyle.Regular), new SolidBrush(Color.Black), p1);
+            grp.DrawString("B", new Font(FontFamily.GenericSerif, 30, FontStyle.Regular), new SolidBrush(Color.Black), p2);
+            grp.DrawString("C", new Font(FontFamily.GenericSerif, 30, FontStyle.Regular), new SolidBrush(Color.Black), p3);
             if (BoxLiniiMijlocii.Checked)
                 DeseneazaLiniiMijlocii(p1, p2, p3, Color.Moccasin);
             if (BoxMediana.Checked)
@@ -165,13 +168,14 @@ namespace Triunghi
           PointF mac=  Mediana(B, A, C, color);
           PointF mab=  Mediana(C, A, B, color);
             PointF inter  = Intersectie(C, mab, A, Panta(A, mbc));
+            grp.DrawString("G", new Font(FontFamily.GenericSerif,30,FontStyle.Regular), new SolidBrush(color), inter);
           
 
            
         }
         #endregion
         #region Bisectoare
-        private float  Bisectoare(PointF A, PointF B, PointF C,Color color )
+        private PointF  Bisectoare(PointF A, PointF B, PointF C,Color color )
         {
             float ia, ja, ib, jb;
             ia = B.X - A.X;
@@ -191,7 +195,7 @@ namespace Triunghi
             Pen p = new Pen(color, 5);
           
             grp.DrawLine(new Pen(color, 5), A, inter );
-            return Panta(A, inter);
+            return inter;
 
 
 
@@ -206,10 +210,13 @@ namespace Triunghi
             {
 
 
-                Bisectoare(B, A, C, color);
+                PointF Bb =Bisectoare(B, A, C, color);
                
-                Bisectoare(A, B, C, color);
-                Bisectoare(C,A,B, color);
+              PointF Ab=  Bisectoare(A, B, C, color);
+                PointF Cb = Bisectoare(C,A,B, color);
+                PointF I = Intersectie(A, Ab, Bb, Panta(B, Bb));
+                grp.DrawString("I", new Font(FontFamily.GenericSerif, 30, FontStyle.Regular), new SolidBrush(color), I);
+
             }
         }
         private PointF Intersectie(PointF b, PointF c, PointF a, float panta)
@@ -222,7 +229,10 @@ namespace Triunghi
             C2 = A2 * b.X - b.Y;
             float det = A1 * B2 - A2 * B1;
             if (det == 0)
-              throw new Exception("Eroare");
+            {
+                throw new Exception("Eroare");
+               
+            }
             float dx = C1 * B2 - B1 * C2;
             float dY = A1 * C2 - C1 * A2;
             float X = dx / det;
@@ -245,23 +255,33 @@ namespace Triunghi
             Inaltime(C, A, B, color);
             Inaltime(B, A, C, color);
         }
-        public void Mediatoare(PointF A, PointF B, Color color )
+        public void Mediatoare(PointF A, PointF B, PointF C,Color color )
         {
             PointF MijAB = Mijloc(A, B);
             float pantaMed = -1 / Panta(A, B);
             PointF ExA, ExB;
+            /*
             ExA = new PointF(-1000, pantaMed * (-1000) - pantaMed * MijAB.X + MijAB.Y);
             ExB = new PointF(1000, pantaMed * (1000) - pantaMed * MijAB.X + MijAB.Y);
+            */
+            PointF inter1 = new PointF();
+
+            PointF inter2 = new PointF();
+            inter1= Intersectie(B, C, MijAB, pantaMed);
+           // inter2  = Intersectie(A, C, MijAB, pantaMed);
+
+          //  PointF inter = (distanta(A, inter1) < distanta(A, inter2)) ? inter1 : inter2;
+         
             Pen p = new Pen(color, 5);
-            p.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
-            grp.DrawLine(p, ExA, ExB);
+         //   p.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
+            grp.DrawLine(p, MijAB, inter1);
 
         }
         public void DeseneazaMediatoare(PointF A, PointF B,PointF C, Color color)
         {
-            Mediatoare(A, B, color);
-            Mediatoare(B, C, color);
-            Mediatoare(A, C, color);
+            Mediatoare(A, B,C, color);
+            Mediatoare(B, C,A, color);
+            Mediatoare(A, C,B, color);
         }
 
     }
