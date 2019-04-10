@@ -47,20 +47,22 @@ namespace AcopeririConvexe
             // points.Clear();
             Pen pen;
             
-            int X = 10, Y = 10;
+            int X=0 , Y=0 ;
             for (int i = 0; i < NrPuncte; i++)
             {
-                Point p =nextRandomPoint(points);
+                Point p = nextRandomPoint(points);
+               
+           
                 points.Add(p);
                 pen = new Pen(RandomColor(), pointWidth);
                 grp.DrawEllipse(pen, p.X, p.Y, pointWidth, pointWidth);
                 grp.FillEllipse(new SolidBrush(pen.Color), p.X, p.Y, pointWidth, pointWidth);
 
             }
-            
-          
 
-            List<Point> CHS = Graham( points.ToArray());
+
+
+            List<Point> CHS = Graham(points.ToArray());
            
             for (int i = 0; i < CHS.Count - 1; i++)
             {
@@ -108,35 +110,32 @@ namespace AcopeririConvexe
         {
             return Math.Sqrt((B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y));
         }
-        private List<Point> Jarvis(List<Point> points)
-        {
-
-            //se afla punctul cu  y minim, daca sunt mai multe puncte cu y min, se ia cea cu x minim.
+        private List<Point> Jarvis(List<Point> points){ 
             int indexmin = 0;
-
             for (int i = 1; i < points.Count; i++)
-                if (points[i].Y < points[indexmin].Y || (points[i].Y == points[indexmin].Y && points[i].X < points[indexmin].X))
-                    indexmin = i;
+                   if(points[i].Y<points[indexmin].Y 
+                       || (points[i].Y==points[indexmin].Y &&points[i].X>points[indexmin].X))
+                          indexmin = i;
             List<Point> CHS = new List<Point>();
             CHS.Add(points[indexmin]);
-            // points.Remove(points[indexmin]);
+            int steps = 0;
             for (int i = 0; i < CHS.Count; i++)
             {
                 Point nextPoint = (CHS[i] == points[0]) ? points[1] : points[0];
-
                 for (int j = 0; j < points.Count; j++)
-                    if (Orientare(CHS[i], points[j], nextPoint) < 0)
+                {
+                    float det = Orientare(CHS[i], points[j], nextPoint);
+                    if (det > 0 ||( det==0 
+                        &&Distance(CHS[i],points[j])>Distance(CHS[i],nextPoint)))
                         nextPoint = points[j];
-
+                }
+                steps++;
+                if (steps >= 1000)
+                    Application.Exit();
                 if (nextPoint != CHS[0])
                     CHS.Add(nextPoint);
-
             }
-
-            //  MessageBox.Show("sHOW");
             return CHS;
-
-
         }
         public void Swap( ref Point a, ref  Point b)
         {
@@ -151,18 +150,22 @@ namespace AcopeririConvexe
         {
             int index = 0;
             for (int i = 1; i < points.Length; i++)
-               if (points[i].Y < points[index].Y ||
+                if (points[i].Y < points[index].Y ||
                   (points[i].Y == points[index].Y && points[i].X < points[index].X))
                   index = i;
             Swap(ref points[0], ref points[index]);
             Sort(points);
            Insert(ref points); 
             int nrPuncte = 2;
+            int steps = 0;
             for(int i=3;i<points.Length;i++)
             {
-                while (nrPuncte >1 && Orientare(points[nrPuncte - 1], points[nrPuncte], points[i]) >=0)
+                while (nrPuncte >1 && Orientare(points[nrPuncte - 1], points[nrPuncte], points[i])>=0)
                     nrPuncte--;
                 nrPuncte++;
+                steps++;
+                if (steps >= 1000)
+                    Application.Exit();
                 Swap(ref points[nrPuncte],  ref points[i]);
             }
             Array.Resize(ref points, nrPuncte+1);
