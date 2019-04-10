@@ -148,33 +148,11 @@
             this.BoxBisectoare.Text = "Bisectoare";
             this.BoxBisectoare.UseVisualStyleBackColor = true;
             // 
-            // BoxInaltime
-            // 
-            this.BoxInaltime.AutoSize = true;
-            this.BoxInaltime.Location = new System.Drawing.Point(429, 555);
-            this.BoxInaltime.Name = "BoxInaltime";
-            this.BoxInaltime.Size = new System.Drawing.Size(62, 17);
-            this.BoxInaltime.TabIndex = 11;
-            this.BoxInaltime.Text = "Inaltime";
-            this.BoxInaltime.UseVisualStyleBackColor = true;
-            // 
-            // BoxMediatoare
-            // 
-            this.BoxMediatoare.AutoSize = true;
-            this.BoxMediatoare.Location = new System.Drawing.Point(429, 650);
-            this.BoxMediatoare.Name = "BoxMediatoare";
-            this.BoxMediatoare.Size = new System.Drawing.Size(79, 17);
-            this.BoxMediatoare.TabIndex = 12;
-            this.BoxMediatoare.Text = "Mediatoare";
-            this.BoxMediatoare.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1151, 747);
-            this.Controls.Add(this.BoxMediatoare);
-            this.Controls.Add(this.BoxInaltime);
+            this.ClientSize = new System.Drawing.Size(1067, 747);
             this.Controls.Add(this.BoxBisectoare);
             this.Controls.Add(this.BoxMediana);
             this.Controls.Add(this.BoxLiniiMijlocii);
