@@ -70,12 +70,14 @@ namespace Lab5
         int nrPuncte = 2;
         public void GrahamStep(int i)
         {
-         
-            while (nrPuncte>1&&Orientare(points[nrPuncte-1],points[nrPuncte],points[i])>=0)
+            grp.DrawEllipse(new Pen(Color.Aquamarine), pointArray[i].X, pointArray[i].Y, 3, 3);
+            grp.FillEllipse(new SolidBrush(Color.Aquamarine), pointArray[i].X, pointArray[i].Y, 3, 3);
+            while (nrPuncte>1&&Orientare(pointArray[nrPuncte-1],pointArray[nrPuncte],pointArray[i])>=0)
             {
-                grp.DrawLine(new Pen(pB.BackColor), points[nrPuncte - 1], points[nrPuncte]);
+                grp.DrawLine(new Pen(pB.BackColor), pointArray[nrPuncte - 1], pointArray[nrPuncte]);
                 nrPuncte--;
-                
+               
+
 
             }
             nrPuncte++;
@@ -203,12 +205,15 @@ namespace Lab5
                 curent++;
             }else
             {
+                
                 Array.Resize(ref pointArray, nrPuncte + 1);
-                labelPuncte.Text = "";
-                for (int j = 0; j < nrPuncte; j++)
-                    labelPuncte.Text += hash[pointArray[j]] + " ";
-                for (int j = 0; j < nrPuncte - 1; j++)
+               // labelPuncte.Text = "";
+               // for (int j = 0; j <pointArray.Length; j++)
+                  //  labelPuncte.Text += hash[pointArray[j]] + " ";
+                for (int j = 0; j < pointArray.Length-1; j++)
                     grp.DrawLine(new Pen(Color.Black), pointArray[j], pointArray[j + 1]);
+                grp.DrawLine(new Pen(Color.Black), pointArray[0], pointArray[pointArray.Length - 1]);
+                pB.Image = bmp;
 
             }
         }
