@@ -32,6 +32,7 @@
             this.ButtonStart = new System.Windows.Forms.Button();
             this.labelIndic = new System.Windows.Forms.Label();
             this.labelPuncte = new System.Windows.Forms.Label();
+            this.buttonNext = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pB)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,11 +72,22 @@
             this.labelPuncte.TabIndex = 3;
             this.labelPuncte.Text = "label Puncte";
             // 
+            // buttonNext
+            // 
+            this.buttonNext.Location = new System.Drawing.Point(658, 398);
+            this.buttonNext.Name = "buttonNext";
+            this.buttonNext.Size = new System.Drawing.Size(99, 40);
+            this.buttonNext.TabIndex = 4;
+            this.buttonNext.Text = "Next ";
+            this.buttonNext.UseVisualStyleBackColor = true;
+            this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(869, 450);
+            this.Controls.Add(this.buttonNext);
             this.Controls.Add(this.labelPuncte);
             this.Controls.Add(this.labelIndic);
             this.Controls.Add(this.ButtonStart);
@@ -95,6 +107,7 @@
         private System.Windows.Forms.Button ButtonStart;
         private System.Windows.Forms.Label labelIndic;
         private System.Windows.Forms.Label labelPuncte;
+        private System.Windows.Forms.Button buttonNext;
     }
 }
 

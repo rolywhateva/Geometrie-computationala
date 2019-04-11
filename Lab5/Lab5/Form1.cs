@@ -36,6 +36,9 @@ namespace Lab5
             points.Add(new Point(6, 7));
             labelIndic.Visible = false;
             labelPuncte.Visible = false;
+           
+            buttonNext.Enabled = false;
+         
 
         }
         private List<Point> Graham(Point[] points)
@@ -64,20 +67,27 @@ namespace Lab5
             Array.Resize(ref points, nrPuncte + 1);
             return points.ToList();
         }
-        public void GrahamStep(int i,int nrPuncte)
+        int nrPuncte = 2;
+        public void GrahamStep(int i)
         {
-            for (int j = 0; j < i; j++)
-                labelPuncte.Text += hash[pointArray[i]] + " ";
+         
             while (nrPuncte>1&&Orientare(points[nrPuncte-1],points[nrPuncte],points[i])>=0)
             {
+                grp.DrawLine(new Pen(pB.BackColor), points[nrPuncte - 1], points[nrPuncte]);
                 nrPuncte--;
                 
 
             }
             nrPuncte++;
+       
 
             Swap(ref pointArray[nrPuncte], ref pointArray[i]);
-
+            labelPuncte.Text = "";
+            for (int j = 0; j < nrPuncte; j++)
+                labelPuncte.Text += hash[pointArray[j]] + " ";
+            for (int j = 0; j < nrPuncte-1; j++)
+                grp.DrawLine(new Pen(Color.Black), pointArray[j], pointArray[j + 1]);
+            pB.Image = bmp;
         }
         public void Swap(ref Point a, ref Point b)
         {
@@ -125,7 +135,7 @@ namespace Lab5
                 points[i] = points[i - 1];
             points[0] = points[points.Length - 1];
         }
-
+        int curent = 3;
         private void ButtonStart_Click(object sender, EventArgs e)
         {
 
@@ -149,7 +159,7 @@ namespace Lab5
                 if (pointArray[i].X < pointArray[index].X ||
                     (pointArray[i].X == pointArray[index].X && pointArray[i].Y > pointArray[index].Y))
                     index = i;
-
+            Swap(ref pointArray[0], ref pointArray[index]);
             Sort(pointArray);
             Insert(ref pointArray);
             labelIndic.Visible = true;
@@ -160,10 +170,11 @@ namespace Lab5
                 labelPuncte.Text += hash[pointArray[i]] + " ";
             for (int i = 0; i < 2; i++)
                 grp.DrawLine(new Pen(Color.Black), pointArray[i], pointArray[i + 1]);
-           
+        
 
 
-          
+            ButtonStart.Enabled = false;
+            buttonNext.Enabled = true;
 
             /*
             List<Point> CHS = Graham(points.ToArray());
@@ -182,6 +193,24 @@ namespace Lab5
 
             pB.Image = bmp;
 
+        }
+
+        private void buttonNext_Click(object sender, EventArgs e)
+        {
+            if (curent < pointArray.Length)
+            {
+                GrahamStep(curent);
+                curent++;
+            }else
+            {
+                Array.Resize(ref pointArray, nrPuncte + 1);
+                labelPuncte.Text = "";
+                for (int j = 0; j < nrPuncte; j++)
+                    labelPuncte.Text += hash[pointArray[j]] + " ";
+                for (int j = 0; j < nrPuncte - 1; j++)
+                    grp.DrawLine(new Pen(Color.Black), pointArray[j], pointArray[j + 1]);
+
+            }
         }
     }
 }
