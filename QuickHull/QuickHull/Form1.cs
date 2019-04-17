@@ -36,7 +36,13 @@ namespace QuickHull
             grp.Clear(pictureBox.BackColor);
             points = new List<Point>();
             pointText = new Dictionary<Point, string>();
+            
             int n = (int)UpDownPointCount.Value;
+            if(n<2)
+            {
+                MessageBox.Show("NU!");
+                return;
+            }
             points = GetRandomPoints(n);
             for (int i = 0; i < points.Count; i++)
                 pointText.Add(points[i], "P" + (i + 1));
@@ -79,6 +85,58 @@ namespace QuickHull
                 returnPoints.Add(toAdd);
             }
             return returnPoints;
+        }
+    
+        private void ButtonSet1_Click(object sender, EventArgs e)
+        {
+            grp.Clear(pictureBox.BackColor);
+            points = new List<Point>();
+            points.Add(new Point(20, 80));
+            points.Add(new Point(100, 90));
+            points.Add(new Point(50, 60));
+            points.Add(new Point(80, 100));
+            points.Add(new Point(10, 30));
+            points.Add(new Point(30, 40));
+            points.Add(new Point(60, 70));
+        
+            DrawPoints(points, Color.Black, false);
+            DrawHull();
+            pictureBox.Image = bmp;
+
+        }
+        private void ButonSet3_Click(object sender, EventArgs e)
+        {
+            grp.Clear(pictureBox.BackColor);
+            points = new List<Point>();
+
+            points.Add(new Point(120, 80));
+            points.Add(new Point(100,  80));
+            points.Add(new Point(340, 50));
+            points.Add(new Point(50, 120));
+            points.Add(new Point(530, 340));
+            points.Add(new Point(380, 450));
+            //points.Add(new Point(80, 150));
+
+            DrawPoints(points, Color.Black, false);
+            DrawHull();
+            pictureBox.Image = bmp;
+        }
+        private void ButtonSet2_Click(object sender, EventArgs e)
+        {
+            grp.Clear(pictureBox.BackColor);
+            points = new List<Point>();
+
+            points.Add(new Point(50, 80));
+            points.Add(new Point(35, 25));
+            points.Add(new Point(20, 200));
+            points.Add(new Point(50, 30));
+            points.Add(new Point(10, 300));
+            points.Add(new Point(210, 240));
+            points.Add(new Point(80, 150));
+
+            DrawPoints(points, Color.Black, false);
+            DrawHull();
+            pictureBox.Image = bmp;
         }
 
         #region Quick Hull
@@ -138,12 +196,12 @@ namespace QuickHull
             MessageBox.Show(text);
             */
             List<Point> CHSlist = Jarvis(CHS.ToList());
-            for(int i=0;i<CHS.Count-1;i++)
+            for(int i=0;i<CHSlist.Count-1;i++)
             {
                grp.DrawLine(new Pen(Color.Black), CHSlist[i], CHSlist[i + 1]);
             }
             
-         grp.DrawLine(new Pen(Color.Black), CHSlist[0], CHSlist[CHS.Count-1]);
+         grp.DrawLine(new Pen(Color.Black), CHSlist[0], CHSlist[CHSlist.Count-1]);
 
 
         }
@@ -228,6 +286,9 @@ namespace QuickHull
             }
             return CHS;
         }
+
         #endregion
+
+     
     }
 }
