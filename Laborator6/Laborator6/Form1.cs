@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QuickHull
+namespace Laborator6
 {
     public partial class Form1 : Form
     {
@@ -23,22 +23,14 @@ namespace QuickHull
         Dictionary<Point, string> pointText;
 
         Random rnd;
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
-            grp = Graphics.FromImage(bmp);
-           // grp.DrawLine(new Pen(Color.Black), 30, 40, 120, 156);
-         //   pictureBox.Image = bmp;
-        }
-       
-        private void butonGenerare_Click(object sender, EventArgs e)
+        private void ButtonGenerare_Click(object sender, EventArgs e)
         {
             grp.Clear(pictureBox.BackColor);
             points = new List<Point>();
             pointText = new Dictionary<Point, string>();
-            
-            int n = (int)UpDownPointCount.Value;
-            if(n<2)
+
+            int n = 10;
+            if (n < 2)
             {
                 MessageBox.Show("NU!");
                 return;
@@ -47,128 +39,57 @@ namespace QuickHull
             for (int i = 0; i < points.Count; i++)
                 pointText.Add(points[i], "P" + (i + 1));
 
-            DrawPoints(points,Color.Black,true);
+            DrawPoints(points, Color.Black, true);
             DrawHull();
-      
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < points.Count; i++)
+                if (!CHS.Contains(points[i]))
+                    sb.AppendFormat("{0}={1}\n", pointText[points[i]], points[i]);
+            LabelRaspuns.Text = sb.ToString();
+                   
+
             pictureBox.Image = bmp;
         }
-
-        private void DrawPoints(List<Point> points,Color PointColor,bool text)
+        private void DrawPoints(List<Point> points, Color PointColor, bool text)
         {
             int pointWidth = 3;
-           // Color PointColor = Color.Red;
-     
-        
+            // Color PointColor = Color.Red;
+
+
             Font textFont = new Font("Verdana", 10, FontStyle.Regular);
-           for(int i=0;i<points.Count;i++)
+            for (int i = 0; i < points.Count; i++)
             {
                 grp.DrawEllipse(new Pen(PointColor, pointWidth), points[i].X, points[i].Y, pointWidth, pointWidth);
                 grp.FillEllipse(new SolidBrush(PointColor), points[i].X, points[i].Y, pointWidth, pointWidth);
-                if(text==true)
-                grp.DrawString("P" + (i + 1), textFont, new SolidBrush(Color.Black), points[i]);
+                if (text == true)
+                    grp.DrawString("P" + (i + 1), textFont, new SolidBrush(Color.Black), points[i]);
             }
-         
-        }
 
+        }
         List<Point> GetRandomPoints(int n)
         {
             rnd = new Random((int)System.DateTime.Now.Ticks);
             List<Point> returnPoints = new List<Point>();
-            for(int i=0;i<n;i++)
+            for (int i = 0; i < n; i++)
             {
                 Point toAdd;
                 do
                 {
-                    int x = rnd.Next() % (pictureBox.Width-10);
-                    int y = rnd.Next() % (pictureBox.Height-5);
+                    int x = rnd.Next() % (pictureBox.Width - 10);
+                    int y = rnd.Next() % (pictureBox.Height - 5);
                     toAdd = new Point(x, y);
                 } while (returnPoints.Contains(toAdd));
                 returnPoints.Add(toAdd);
             }
             return returnPoints;
         }
-    
-        private void ButtonSet1_Click(object sender, EventArgs e)
-        {
-            grp.Clear(pictureBox.BackColor);
-            points = new List<Point>();
-            points.Add(new Point(20, 80));
-            points.Add(new Point(100, 90));
-            points.Add(new Point(50, 60));
-            points.Add(new Point(80, 100));
-            points.Add(new Point(10, 30));
-            points.Add(new Point(30, 40));
-            points.Add(new Point(60, 70));
-        
-            DrawPoints(points, Color.Black, true);
-            DrawHull();
-            pictureBox.Image = bmp;
 
-        }
-        private void ButonSet3_Click(object sender, EventArgs e)
-        {
-            grp.Clear(pictureBox.BackColor);
-            points = new List<Point>();
 
-            points.Add(new Point(120, 80));
-            points.Add(new Point(100,  80));
-            points.Add(new Point(340, 50));
-            points.Add(new Point(50, 120));
-            points.Add(new Point(530, 340));
-            points.Add(new Point(380, 450));
-            DrawPoints(points, Color.Black, true);
-            //points.Add(new Point(80, 150));
 
-            DrawPoints(points, Color.Black, true);
-            DrawHull();
-            pictureBox.Image = bmp;
-        }
-        private void ButtonSet2_Click(object sender, EventArgs e)
-        {
-            grp.Clear(pictureBox.BackColor);
-            points = new List<Point>();
-
-            points.Add(new Point(50, 80));
-            points.Add(new Point(35, 25));
-            points.Add(new Point(20, 200));
-            points.Add(new Point(50, 30));
-            points.Add(new Point(10, 300));
-            points.Add(new Point(210, 240));
-            points.Add(new Point(80, 150));
-          
-            DrawPoints(points, Color.Black, true);
-            DrawHull();
-            pictureBox.Image = bmp;
-        }
-
-        #region Quick Hull
-        //in ce parte e punctul p fata de  p1p2? 
-        int findSide(Point  p1, Point p2, Point p)
-        {
-            int val = (p.Y - p1.Y) * (p2.X - p1.X) - (p2.Y - p1.Y) * (p.X - p1.X);
-            /*
-            int val = (p.second - p1.second) * (p2.first - p1.first) -
-                      (p2.second - p1.second) * (p.first - p1.first);
-                      */
-            if (val > 0)
-                return 1;
-            if (val < 0)
-                return -1;
-            return 0;
-        }
-         int SquaredDistance(Point p1, Point p2)
-        {
-            return Math.Abs((p2.Y - p1.Y) * (p2.Y - p1.Y) + (p2.X - p1.X) * (p2.X - p1.X));
-        }
-        int LineDist(Point p1, Point p2, Point p)
-        {
-            return Math.Abs((p.Y - p1.Y) * (p2.X - p1.X) -
-                       (p2.Y - p1.Y) * (p.X - p1.X));
-        }
         void DrawHull()
         {
-            int minX = 0, maxX=0;
-            for(int i=1;i<points.Count;i++)
+            int minX = 0, maxX = 0;
+            for (int i = 1; i < points.Count; i++)
             {
                 if (points[i].X > points[maxX].X)
                     maxX = i;
@@ -184,8 +105,8 @@ namespace QuickHull
 
             QuickHull(points, aux1, aux2, 1);
             QuickHull(points, aux1, aux2, -1);
-          
-        
+            DrawPoints(CHS.ToList(), Color.Red, false);
+
             /*
               string text="";
             for (int i = 0; i < CHS.Count; i++)
@@ -198,27 +119,19 @@ namespace QuickHull
             MessageBox.Show(text);
             */
             List<Point> CHSlist = Jarvis(CHS.ToList());
-          //  grp.FillPolygon(new SolidBrush(Color.HotPink), CHSlist.ToArray());
-            for (int i=0;i<CHSlist.Count-1;i++)
+            for (int i = 0; i < CHSlist.Count - 1; i++)
             {
-               grp.DrawLine(new Pen(Color.Black), CHSlist[i], CHSlist[i + 1]);
+                grp.DrawLine(new Pen(Color.Black), CHSlist[i], CHSlist[i + 1]);
             }
-                grp.DrawLine(new Pen(Color.Black), CHSlist[0], CHSlist[CHSlist.Count-1]);
-            
-            /*
-           
-            grp.DrawPolygon(new Pen(Color.Black, 5), CHSlist.ToArray());
-            */
-            DrawPoints(CHS.ToList(), Color.Red, false);
 
+            grp.DrawLine(new Pen(Color.Black), CHSlist[0], CHSlist[CHSlist.Count - 1]);
 
 
         }
-
         private void QuickHull(List<Point> points, Point p1, Point p2, int side)
         {
             int index = -1;
-            int distMax= 0;
+            int distMax = 0;
             for (int i = 0; i < points.Count; i++)
             {
                 int temp = LineDist(p1, p2, points[i]);
@@ -230,20 +143,40 @@ namespace QuickHull
             }
             if (index == -1)
             {
-           
-               CHS.Add(p1);
-         
-               CHS.Add(p2);
+
+                CHS.Add(p1);
+
+                CHS.Add(p2);
                 return;
             }
             Point toRemove = new Point(points[index].X, points[index].Y);
-           // points.Remove(toRemove);
+            // points.Remove(toRemove);
             QuickHull(points, toRemove, p1, -findSide(toRemove, p1, p2));
             QuickHull(points, toRemove, p2, -findSide(toRemove, p2, p1));
 
         }
-        #endregion
-
+        int findSide(Point p1, Point p2, Point p)
+        {
+            int val = (p.Y - p1.Y) * (p2.X - p1.X) - (p2.Y - p1.Y) * (p.X - p1.X);
+            /*
+            int val = (p.second - p1.second) * (p2.first - p1.first) -
+                      (p2.second - p1.second) * (p.first - p1.first);
+                      */
+            if (val > 0)
+                return 1;
+            if (val < 0)
+                return -1;
+            return 0;
+        }
+        int SquaredDistance(Point p1, Point p2)
+        {
+            return Math.Abs((p2.Y - p1.Y) * (p2.Y - p1.Y) + (p2.X - p1.X) * (p2.X - p1.X));
+        }
+        int LineDist(Point p1, Point p2, Point p)
+        {
+            return Math.Abs((p.Y - p1.Y) * (p2.X - p1.X) -
+                       (p2.Y - p1.Y) * (p.X - p1.X));
+        }
         #region Jarvis
         public void Swap(ref Point a, ref Point b)
         {
@@ -297,7 +230,10 @@ namespace QuickHull
         }
 
         #endregion
-
-     
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
+            grp = Graphics.FromImage(bmp);
+        }
     }
 }
