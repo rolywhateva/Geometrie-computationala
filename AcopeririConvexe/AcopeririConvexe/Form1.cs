@@ -160,11 +160,7 @@ namespace AcopeririConvexe
         }
         private List<Point> Graham(Point[] points)
         {
-            Dictionary<Point, string> hash = new Dictionary<Point, string>();
-            for(int i=0;i<points.Length;i++)
-            {
-                hash.Add(points[i], "P" + (i + 1));
-            }
+         
             int index = 0;
             for (int i = 1; i < points.Length; i++)
                 if (points[i].X < points[index].X || 

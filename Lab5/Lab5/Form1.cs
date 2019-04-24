@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace Lab5
 {
     public partial class Form1 : Form
@@ -27,6 +26,7 @@ namespace Lab5
             bmp = new Bitmap(pB.Width, pB.Height);
             grp = Graphics.FromImage(bmp);
             points = new List<Point>();
+            
             points.Add(new Point(1, 11));
             points.Add(new Point(2, 7));
             points.Add(new Point(3, 8));
@@ -34,6 +34,21 @@ namespace Lab5
             points.Add(new Point(5, 7));
             points.Add(new Point(7, 11));
             points.Add(new Point(6, 7));
+            
+            /*
+            Random rnd = new Random();
+            for (int i = 0; i < 45; i++)
+            {
+                Point toAdd;
+                do
+                {
+                    toAdd = new Point(rnd.Next() % (pB.Width / 30), rnd.Next() % (pB.Height / 30));
+                  
+                } while (points.Contains(toAdd));
+                points.Add(toAdd);
+             }
+             */
+             
             labelIndic.Visible = false;
             labelPuncte.Visible = false;
            
@@ -53,13 +68,13 @@ namespace Lab5
 
             Sort(points);
             Insert(ref points);
-
+                
 
             int nrPuncte = 2;
             int steps = 0;
             for (int i = 3; i < points.Length; i++)
             {
-                while (nrPuncte > 1 && Orientare(points[nrPuncte - 1], points[nrPuncte], points[i]) >= 0)
+                while (nrPuncte > 1 && Orientare(points[nrPuncte - 1], points[nrPuncte], points[i]) >=0)
                     nrPuncte--;
                 nrPuncte++;
                 Swap(ref points[nrPuncte], ref points[i]);
