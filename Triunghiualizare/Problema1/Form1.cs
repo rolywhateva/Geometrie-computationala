@@ -47,7 +47,8 @@ namespace Problema1
             pointHash = new Dictionary<Point, string>();
             for (int i = 0; i < points.Count; i++)
                 pointHash.Add(points[i], "P" + (i + 1));
-            grp.DrawLine()
+            grp.DrawLine(new Pen(Color.Black), points[0], points[4]);
+            grp.DrawLine(new Pen(Color.Black), points[4], points[2]);
             //Triunghiulare(t);
             for (int i = 0; i < points.Count; i++)
             {
