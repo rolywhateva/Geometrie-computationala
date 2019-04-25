@@ -23,11 +23,11 @@ namespace PasCuPas
         Color lineColor = Color.Black;
         int pointSize = 5;
         Font pointFont = new Font("Verdana", 8, FontStyle.Bold);
-        Point[] A = new Point[] {};
-        Point[] B = new Point[] { };
+      
         Dictionary<Point, string> pointHash = new Dictionary<Point, string>();
         List<Point> t = new List<Point>();
         List<Point> points = new List<Point>();
+        Point[] A, B;
         private void Form1_Load(object sender, EventArgs e)
         {
             bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
@@ -41,7 +41,8 @@ namespace PasCuPas
             points.Add(new Point(-20, 40));
             points.Add(new Point(0, -60));
             points.Add(new Point(20, -20));
-
+            A = new Point[] {points[1],points[3],points[1]};
+            B = new Point[] {points[7],points[7],points[3]};
             grp.Clear(pictureBox.BackColor);
             pictureBox.Image = bmp;
             t.Clear();
@@ -60,7 +61,7 @@ namespace PasCuPas
             grp.DrawLine(new Pen(Color.Black), points[4], points[2]);
             grp.DrawLine(new Pen(Color.Black), points[1], points[4]);
             */
-            Triunghiulare(t);
+          //  Triunghiulare(t);
             for (int i = 0; i < points.Count; i++)
             {
                 grp.DrawEllipse(new Pen(pointColor), points[i].X, points[i].Y, pointSize, pointSize);
@@ -161,6 +162,19 @@ namespace PasCuPas
                 return true;
             return false;
         }
+        int curent = 0;
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if(curent>=A.Length)
+            {
+                MessageBox.Show("GATA!");
+                return;
+            }
+            grp.DrawLine(new Pen(Color.HotPink), A[curent], B[curent]);
+            pictureBox.Image = bmp;
+            curent++;
+        }
+
         bool isInside(List<Point> t, Point p)
         {
             if (t.Count < 3)

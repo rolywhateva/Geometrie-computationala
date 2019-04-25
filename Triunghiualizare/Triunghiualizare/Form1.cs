@@ -37,7 +37,7 @@ namespace Triunghiualizare
         }
         #region Aleator
         List<Point> points = new List<Point>();
-        private List<Point> GetRandomPoints(int n)
+        private List<Point> GetRandomPoints(int n, int ct)
         {
             
             List<Point> list = new List<Point>();
@@ -51,23 +51,40 @@ namespace Triunghiualizare
             List<Point> toReturn = Jarvis(list);
             if (n == toReturn.Count)
                 return toReturn;
+
             else
-                return GetRandomPoints(n);
+               if (ct < 10000)
+            {
+                list.Clear();
+                return GetRandomPoints(n, ct + 1);
+            }
+            else
+                return toReturn;
          
-      
-            
+           
+        
         }
         private Point RandomPoint(List<Point> list)
         {
             Point toReturn = new Point();
-            int nr;
-            do
+            try
             {
-                int x = rnd.Next() % (pictureBox.Width - 12);
-                int y = rnd.Next() % (pictureBox.Height - 5);
-                toReturn = new Point(x, y);
-             
-            } while (list.Contains(toReturn));
+              
+                int nr;
+                do
+                {
+
+                    int x = rnd.Next() % (pictureBox.Width - 12);
+                    int y = rnd.Next() % (pictureBox.Height - 5);
+                    toReturn.X = x;
+                    toReturn.Y = y;
+
+                } while (list.Contains(toReturn));
+
+            }catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         
 
             return toReturn;
@@ -88,7 +105,7 @@ namespace Triunghiualizare
             n = int.Parse(textBoxPoints.Text);
 
 
-            points = GetRandomPoints(n);
+            points = GetRandomPoints(n,0);
 
             for (int i = 0; i < points.Count; i++)
                 pointHash.Add(points[i], "P" + (i + 1));
