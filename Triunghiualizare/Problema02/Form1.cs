@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Triunghiualizare
+namespace Problema02
 {
     public partial class Form1 : Form
     {
@@ -16,111 +16,61 @@ namespace Triunghiualizare
         {
             InitializeComponent();
         }
-        /// <summary>
-        /// FIX THIS!!!!!
-        /// </summary>
         Graphics grp;
         Bitmap bmp;
         int n;
         Color pointColor = Color.Black;
         Color lineColor = Color.Black;
         int pointSize = 5;
-        Font pointFont = new Font("Verdana", 8, FontStyle.Bold);
+        Font pointFont = new Font("Verdana", 6, FontStyle.Bold);
         Random rnd = new Random((int)System.DateTime.Now.Ticks);
-        Dictionary<Point, string> pointHash = new Dictionary<Point, string>();
+        Dictionary<Point, string> pointHash;
+        List<Point> points = new List<Point>();
         List<Point> t = new List<Point>();
         private void Form1_Load(object sender, EventArgs e)
         {
             bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
             grp = Graphics.FromImage(bmp);
+            labelPuncte.Text = "";
 
         }
-        #region Aleator
-        List<Point> points = new List<Point>();
-        private List<Point> GetRandomPoints(int n)
+
+        private void ButtonAddPoint_Click(object sender, EventArgs e)
         {
-            
-            List<Point> list = new List<Point>();
-           
-       
-            for (int i=0;i<n;i++)
+            Point p;
+            try
             {
-                 list.Add(RandomPoint(list));
+                int X = int.Parse(textBoxX.Text);
+                int Y = int.Parse(textBoxY.Text);
+                p = new Point(X, Y);
+                if(points.Contains(p))
+                {
+                    MessageBox.Show("Punct ilegal!");
+                    return;
+                }
+                points.Add(new Point(X, Y));
+                labelPuncte.Text += $"({X},{Y})" + Environment.NewLine;
+            }catch(Exception exc)
+            {
+
+                MessageBox.Show("Eroare"+exc.Message);
             }
-            //MessageBox.Show("Works!");
-            List<Point> toReturn = Jarvis(list);
-            if (n == toReturn.Count)
-                return toReturn;
-            else
-                return GetRandomPoints(n);
-         
-      
-            
-        }
-        private Point RandomPoint(List<Point> list)
-        {
-            Point toReturn = new Point();
-            int nr;
-            do
-            {
-                int x = rnd.Next() % (pictureBox.Width - 12);
-                int y = rnd.Next() % (pictureBox.Height - 5);
-                toReturn = new Point(x, y);
-             
-            } while (list.Contains(toReturn));
-        
 
-            return toReturn;
+
+
         }
-    
-        private bool SeIntersecteaza1(Point A, Point B, Point C, Point D)
+
+        private void buttonClear_Click(object sender, EventArgs e)
         {
-            return Orientare(A, B, C) != Orientare(A, B, D) && Orientare(C, D, A) != Orientare(C, D, B);
-        }
-        #endregion
-        private void buttonDraw_Click(object sender, EventArgs e)
-        {
-            GC.Collect();
-            grp.Clear(pictureBox.BackColor);
-            pointHash.Clear(); 
             points.Clear();
-            t.Clear(); 
-            n = int.Parse(textBoxPoints.Text);
-
-
-            points = GetRandomPoints(n);
-
-            for (int i = 0; i < points.Count; i++)
-                pointHash.Add(points[i], "P" + (i + 1));
-           
-            for(int i=0;i<points.Count;i++)
-            {
-                grp.DrawEllipse(new Pen(pointColor), points[i].X, points[i].Y, pointSize, pointSize);
-                grp.FillEllipse(new SolidBrush(pointColor), points[i].X, points[i].Y, pointSize, pointSize);
-                grp.DrawString(pointHash[points[i]], pointFont, new SolidBrush(pointColor), points[i]);
-
-            }
-            for (int i = 0; i < points.Count; i++)
-                t.Add(points[i]);
-            Triunghiulare(t);
-            grp.DrawPolygon(new Pen(lineColor), points.ToArray());
-          
-            /*
-            for (int i = 0; i < points.Count - 1; i++)
-                grp.DrawLine(new Pen(lineColor), points[i], points[i + 1]);
-           grp.DrawLine(new Pen(lineColor), points[0], points[points.Count - 1]);
-           */
-            pictureBox.Image = bmp;
-
+            labelPuncte.Text = "";
         }
-   
+
         private void ButtonDesenare_Click(object sender, EventArgs e)
         {
-
             grp.Clear(pictureBox.BackColor);
             pictureBox.Image = bmp;
             t.Clear();
-
             for (int i = 0; i < points.Count; i++)
             {
 
@@ -147,7 +97,7 @@ namespace Triunghiualizare
 
             grp.DrawPolygon(new Pen(lineColor), points.ToArray());
             pictureBox.Image = bmp;
-
+        
         }
         private void Triunghiulare(List<Point> t)
         {
@@ -160,7 +110,7 @@ namespace Triunghiualizare
             t.Remove(t[i + 1]);
             Triunghiulare(t);
         }
-        private int Orientare2(Point A, Point B, Point C)
+        private int Orientare(Point A, Point B, Point C)
         {
             double temp = (B.Y - A.Y) * (C.X - A.X) - (C.Y - A.Y) * (B.X - A.X);
             if (temp == 0) return 0;  // colinear 
@@ -182,11 +132,11 @@ namespace Triunghiualizare
         {
             // Find the four orientations needed for general and 
             // special cases 
-            int o1 = Orientare2(p1, q1, p2);
-            int o2 = Orientare2(p1, q1, q2);
-            int o3 = Orientare2(p2, q2, p1);
-            int o4 = Orientare2(p2, q2, q1);
-          
+            int o1 = Orientare(p1, q1, p2);
+            int o2 = Orientare(p1, q1, q2);
+            int o3 = Orientare(p2, q2, p1);
+            int o4 = Orientare(p2, q2, q1);
+
             // General case 
             if (o1 != o2 && o3 != o4)
                 return true;
@@ -217,7 +167,7 @@ namespace Triunghiualizare
 
             {
 
-                if (SeIntersecteaza(point1, point2, t[i], t[i + 1]) ||!isInside(t, M))
+                if (SeIntersecteaza(point1, point2, t[i], t[i + 1]) && !isInside(t, M))
                     return false;
             }
 
@@ -226,7 +176,6 @@ namespace Triunghiualizare
 
 
         }
-
         #region In poligon
         bool onSegment(Point p, Point q, Point r)
         {
@@ -264,50 +213,6 @@ namespace Triunghiualizare
         }
 
         #endregion
-        #region Jarvis
 
-        private double Distance(Point A, Point B)
-        {
-            return Math.Sqrt((B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y));
-        }
-        private float Orientare(Point A, Point B, Point C)
-        {
-            double temp = (B.Y - A.Y) * (C.X - A.X) - (C.Y - A.Y) * (B.X - A.X);
-            if (temp < 0)
-                return -1;
-            else if (temp == 0) 
-             return 0;
-             else
-            return 1;
-        }
-        private List<Point> Jarvis(List<Point> points)
-        {
-
-            //se afla punctul cu  y minim, daca sunt mai multe puncte cu y min, se ia cea cu x minim.
-            int indexmin = 0;
-            for (int i = 1; i < points.Count; i++)
-                if (points[i].Y < points[indexmin].Y || (points[i].Y == points[indexmin].Y && points[i].X > points[indexmin].X))
-                    indexmin = i;
-            List<Point> CHS = new List<Point>();
-            CHS.Add(points[indexmin]);
-            //points.Remove(points[indexmin]);
-            for (int i = 0; i < CHS.Count; i++)
-            {
-                Point nextPoint = (CHS[i] == points[0]) ? points[1] : points[0];
-                for (int j = 0; j < points.Count; j++)
-                {
-                    float det = Orientare(CHS[i], points[j], nextPoint);
-                    if (det > 0 || (det == 0
-                        && Distance(CHS[i], points[j]) > Distance(CHS[i], nextPoint)))
-                        nextPoint = points[j];
-                }
-
-                if (nextPoint != CHS[0])
-                    CHS.Add(nextPoint);
-            }
-            return CHS;
-        }
-        #endregion
-      
     }
 }

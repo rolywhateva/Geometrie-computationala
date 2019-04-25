@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Triunghiualizare", "Triungh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Problema1", "Problema1\Problema1.csproj", "{5ED73465-7353-4953-9829-475215EA7179}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Problema02", "Problema02\Problema02.csproj", "{0305908D-FBCC-4B14-9D23-AC9F56BF2878}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasCuPas", "PasCuPas\PasCuPas.csproj", "{7A11F038-5F9D-4C60-B775-64296FEF44B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{5ED73465-7353-4953-9829-475215EA7179}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ED73465-7353-4953-9829-475215EA7179}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ED73465-7353-4953-9829-475215EA7179}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0305908D-FBCC-4B14-9D23-AC9F56BF2878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0305908D-FBCC-4B14-9D23-AC9F56BF2878}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0305908D-FBCC-4B14-9D23-AC9F56BF2878}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0305908D-FBCC-4B14-9D23-AC9F56BF2878}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A11F038-5F9D-4C60-B775-64296FEF44B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A11F038-5F9D-4C60-B775-64296FEF44B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A11F038-5F9D-4C60-B775-64296FEF44B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A11F038-5F9D-4C60-B775-64296FEF44B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
