@@ -27,6 +27,10 @@ namespace Laborator10
             grp.TranslateTransform(pictureBox.Width / 2, pictureBox.Height / 2);
            // grp.DrawLine(new Pen(Color.Black), 30, 40, 50, 60);
         }
+        public void FillTriunghi(Point A, Point B, Point C,Color c)
+        {
+            grp.FillPolygon(new SolidBrush(c), new Point[] { A, B, C });
+        }
         public Point  SymetricOx(Point p)
         {
             Point M = new Point(p.X, 0);
@@ -35,18 +39,44 @@ namespace Laborator10
             return new Point(sX, sY);
 
         }
-        public void DrawCircle(Point p)
+        public void DrawCircle(Point p,Color color)
         {
-            int radius = 3;
-            Color color = Color.Red;
+            int radius = 4;
+            //Color color = Color.Green;
             grp.DrawEllipse(new Pen(color), p.X, p.Y, radius, radius);
             grp.FillEllipse(new SolidBrush(color), p.X, p.Y, radius, radius);
         }
+        public void Tricolorare()
+        {
+            Color galben = Color.Purple;
+            Color albastru = Color.Blue;
+            Color orange = Color.Orange;
+            DrawCircle(points[0], galben);
+            DrawCircle(points[1], albastru);
+            DrawCircle(points[2], orange);
+            //DrawCircle(points[1], );
+            DrawCircle(points[3], albastru);
+            DrawCircle(points[9], orange);
+            DrawCircle(points[5], galben);
+
+            DrawCircle(points[4], orange);
+            DrawCircle(points[8], albastru);
+            DrawCircle(points[6], albastru);
+            DrawCircle(points[7], orange);
+            DrawCircle(points[11],albastru);
+            DrawCircle(points[10], galben);
+            
+
+        }   
         public void Noteaza()
         {
             Font font = new Font("Georgia", 10, FontStyle.Regular);
             for (int i = 0; i < points.Count; i++)
                 grp.DrawString(dic[points[i]], font, new SolidBrush(Color.Black), points[i]);
+        }
+        public void DrawLinie(Point A, Point B)
+        {
+            grp.DrawLine(new Pen(Color.Red), A, B);
         }
         private void butonDraw_Click(object sender, EventArgs e)
         {
@@ -60,8 +90,9 @@ namespace Laborator10
 
             for (int i = 5; i >=0; i--)
                 points.Add(SymetricOx(points[i]));
+            
             for (int i = 0; i < points.Count; i++)
-                dic.Add(points[i], "P" + (i + 1));
+                dic.Add(points[i],  (i + 1).ToString());
 
             /*
             points.Add(SymetricOx(points[0]));
@@ -72,13 +103,32 @@ namespace Laborator10
             points.Add(SymetricOx(points[5]));
             */
             Point[] pointArray = points.ToArray();
+            Tricolorare();
             grp.DrawPolygon(new Pen(Color.Black), pointArray);
 
-            //Noteaza();
-                
-            DrawCircle(points[1]);
-            DrawCircle(points[5]);
+           Noteaza();
+          
+            //DrawCircle(points[1],Color.Green);
+           // DrawCircle(points[5],Color.Green);
+       
+            DrawLinie(points[5], points[3]);
+            DrawLinie(points[5], points[8]);
+            DrawLinie(points[5], points[7]);
+           // DrawLinie(points[3], points[8]);
+           // DrawLinie(points[3], points[9]);
+            DrawLinie(points[3], points[9]);
+            DrawLinie(points[0], points[2]);
+            //DrawLinie(points[11], points[10]);
+            DrawLinie(points[5], points[9]);
+           // DrawLinie(points[11], points[2]);
+            DrawLinie(points[9], points[0]);
+            DrawLinie(points[11], points[9]);
+            
+           
+
+
             pictureBox.Image = bmp;
+
 
 
 
