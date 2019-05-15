@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartitionareArie", "PartitionareArie\PartitionareArie.csproj", "{007ABE26-EF57-4F5B-B08A-F040D924D696}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InPolgionSauNu", "InPolgionSauNu\InPolgionSauNu.csproj", "{DC29871A-F62C-41FD-A4AF-5ADD8C2516CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{007ABE26-EF57-4F5B-B08A-F040D924D696}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{007ABE26-EF57-4F5B-B08A-F040D924D696}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{007ABE26-EF57-4F5B-B08A-F040D924D696}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{007ABE26-EF57-4F5B-B08A-F040D924D696}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC29871A-F62C-41FD-A4AF-5ADD8C2516CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC29871A-F62C-41FD-A4AF-5ADD8C2516CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC29871A-F62C-41FD-A4AF-5ADD8C2516CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC29871A-F62C-41FD-A4AF-5ADD8C2516CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F567ADCC-0F16-4582-A26F-0556D489D139}
+	EndGlobalSection
+EndGlobal
