@@ -65,6 +65,7 @@ namespace Laborator10
             DrawCircle(points[7], orange);
             DrawCircle(points[11],albastru);
             DrawCircle(points[10], galben);
+           
             
 
         }   
@@ -87,6 +88,7 @@ namespace Laborator10
             points.Add(new Point(70, 40));
             points.Add(new Point(90, 60));
             points.Add(new Point(110, 60));
+            
 
             for (int i = 5; i >=0; i--)
                 points.Add(SymetricOx(points[i]));
