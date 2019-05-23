@@ -10,6 +10,7 @@ namespace Laborator11
     {
         static void Main(string[] args)
         {
+
         }
     }
 }
