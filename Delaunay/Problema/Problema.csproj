@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7C1503B3-28DB-4E0D-907B-F91A16E7E4DA}</ProjectGuid>
+    <ProjectGuid>{2936FD8C-D13D-4A80-B919-75209CBDACF3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Problema</RootNamespace>
     <AssemblyName>Problema</AssemblyName>
@@ -31,9 +31,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>Problema.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

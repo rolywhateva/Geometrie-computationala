@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gresala", "Voronoi\Gresala.csproj", "{1DAD06D7-AB08-432B-B6F9-45E68937F51C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuncteRandom", "DiagramaVoronoi\PuncteRandom.csproj", "{582511EE-370A-4948-B286-27EC18E4F561}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PunctulCelmaiApropriat", "PunctulCelmaiApropriat\PunctulCelmaiApropriat.csproj", "{F53D16AB-2239-4521-BC3C-DFF5F851A2AE}"
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1DAD06D7-AB08-432B-B6F9-45E68937F51C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1DAD06D7-AB08-432B-B6F9-45E68937F51C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1DAD06D7-AB08-432B-B6F9-45E68937F51C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1DAD06D7-AB08-432B-B6F9-45E68937F51C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{582511EE-370A-4948-B286-27EC18E4F561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{582511EE-370A-4948-B286-27EC18E4F561}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{582511EE-370A-4948-B286-27EC18E4F561}.Release|Any CPU.ActiveCfg = Release|Any CPU

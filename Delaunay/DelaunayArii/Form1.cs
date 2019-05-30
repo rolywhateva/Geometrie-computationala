@@ -24,6 +24,7 @@ namespace DelaunayArii
         {
             bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
             grp = Graphics.FromImage(bmp);
+            labelArii.Text = "";
             labelPuncte.Text = "";
         }
         public void ReDraw()
@@ -63,7 +64,7 @@ namespace DelaunayArii
                 inSide = new PointF(inSide.X * 110, inSide.Y * 110);
                 count++;
             }
-
+          
 
 
 
@@ -76,8 +77,18 @@ namespace DelaunayArii
             trigs.Add(new PointF[] { points[5], points[4], points[3] });
             trigs.Add(new PointF[] { points[1], inSide, points[3] });
             trigs.Add(new PointF[] { points[1], points[2], points[3] });
+            Dictionary<PointF,string> dic = new Dictionary<PointF,string>();
+            for (int i = 0; i < points.Length; i++)
+                dic.Add(points[i],letters[i].ToString());
+            dic.Add(inSide, "G");
 
-          //  FillTrig(trigs);
+
+
+            //  FillTrig(trigs);
+            for (int i = 0; i < trigs.Count; i++)
+                labelArii.Text +=dic[trigs[i][0]]+dic[trigs[i][1]]+dic[trigs[i][2]]+"="+
+                                  Arie(trigs[i][0], trigs[i][1], trigs[i][2])+Environment.NewLine;
+
             NoteazaAll("ABCDEFG");
             grp.DrawString("G", new Font("Verdana", 10, FontStyle.Bold), new SolidBrush(Color.Black), inSide);
 
@@ -92,8 +103,6 @@ namespace DelaunayArii
         {
             for (int i = 0; i < points.Length; i++)
                 grp.DrawString(letters[i].ToString(), new Font("Verdana", 10, FontStyle.Bold), new SolidBrush(Color.Black), points[i]);
-
-
         }
 
         private void Listeaza()
@@ -113,6 +122,19 @@ namespace DelaunayArii
         {
             for (int i = 0; i < ex1.Length; i++)
                 DrawMuchie(ex1[i], ex2[i], p);
+        }
+        
+        private double Dist(PointF A, PointF B)
+        {
+            return Math.Sqrt((B.Y - A.Y) * (B.Y - A.Y) + (B.X - A.X) * (B.X - A.X));
+        }
+        private double Arie(PointF A, PointF B,PointF C)
+        {
+            double p = (Dist(A, B) + Dist(A, C) + Dist(B, C)) / 2;
+            double AB = Dist(A, B);
+            double AC = Dist(A, C);
+            double BC = Dist(B, C);
+            return Math.Sqrt(p * (p - AB) * (p - BC) * (p - AC));
         }
       //  private void FillTrig(List<PointF[]> trigs)
        // {
