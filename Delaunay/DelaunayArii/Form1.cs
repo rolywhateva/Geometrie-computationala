@@ -19,7 +19,7 @@ namespace DelaunayArii
         Graphics grp;
         Bitmap bmp;
         string letters = "ABCDEFG";
-
+        Color[] colors = new Color[] { Color.MediumOrchid, Color.MediumSeaGreen, Color.MidnightBlue, Color.OldLace, Color.OliveDrab };
         private void Form1_Load(object sender, EventArgs e)
         {
             bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
@@ -136,6 +136,44 @@ namespace DelaunayArii
             double BC = Dist(B, C);
             return Math.Sqrt(p * (p - AB) * (p - BC) * (p - AC));
         }
+        private void Voronoi()
+        {
+            for (int i = 0; i < pictureBox.Width; i++)
+                for (int j = 0; j < pictureBox.Height; j++)
+                {
+                    Point toCheck = new Point(i, j);
+                    if (!points.Contains(toCheck))
+                    {
+                        int minindex = 0, mindistance = SqDistance(toCheck, points[0]);
+                        bool granita = false;
+                        for (int z = 1; z < points.Length; z++)
+                        {
+                            int sqdist = SqDistance(toCheck, points[z]);
+                            if (sqdist < mindistance)
+                            {
+                                minindex = z;
+                                mindistance = sqdist;
+                            }
+                            else
+                                 if (sqdist == mindistance)
+                                granita = true;
+                            else
+                                granita = false;
+                        }
+                        if (!granita)
+                            grp.FillEllipse(new SolidBrush(colors[minindex]), toCheck.X, toCheck.Y, 3, 3);
+                        else
+                            grp.FillEllipse(new SolidBrush(Color.Black), toCheck.X, toCheck.Y, 3, 3);
+
+
+
+
+
+                    }
+
+                }
+        }
+
       //  private void FillTrig(List<PointF[]> trigs)
        // {
        //     for (int i = 0; i < trigs.Count; i++)
