@@ -53,6 +53,63 @@ namespace Delaunay
         {
             return new PointF(point.X * val, point.Y * val);
         }
+     
+        private void Voronoi(List<PointF> points,Color[] colors)
+        {
+            for (int i = 0; i < pictureBox.Width; i++)
+                for (int j = 0; j < pictureBox.Height; j++)
+                {
+                    PointF toCheck = new PointF(i, j);
+                    if (!points.Contains(toCheck))
+                    {
+                        int minindex = 0, mindistance = SqDistance(toCheck, points[0]);
+                        bool granita = false;
+                        for (int z = 1; z < points.Count; z++)
+                        {
+                            int sqdist = SqDistance(toCheck, points[z]);
+                            if (sqdist < mindistance)
+                            {
+                                minindex = z;
+                                mindistance = sqdist;
+                            }
+                            // else
+                            //     if (sqdist == mindistance)
+                            //    granita = true;
+                            //  else
+                            //     granita = false;
+                        }
+                        //    if (!granita)
+                        grp.FillEllipse(new SolidBrush(colors[minindex]), toCheck.X, toCheck.Y, 3, 3);
+                        //  else
+                        //  grp.FillEllipse(new SolidBrush(Color.Black), toCheck.X, toCheck.Y, 3, 3);
+
+
+
+                    }
+                }
+        }
+        public int SqDistance(PointF A, PointF B)
+        {
+            return (int)((B.Y - A.Y) * (B.Y - A.Y) + (B.X - A.X) * (B.X - A.X));
+        }
+        private void DrawPoints(List<Point>  points)
+        {
+            for (int i = 0; i < points.Count; i++)
+            {
+                grp.FillEllipse(new SolidBrush(Color.Black), points[i].X, points[i].Y, 3, 3);
+                grp.DrawString(letters[i].ToString(), new Font("Verdana", 8, FontStyle.Regular), new SolidBrush(Color.Black), points[i].X, points[i].Y);
+            }
+        }
+        private void DrawPoints(List<PointF> points)
+        {
+            for (int i = 0; i < points.Count; i++)
+            {
+                grp.FillEllipse(new SolidBrush(Color.Black), points[i].X, points[i].Y, 3, 3);
+                grp.DrawString(letters[i].ToString(), new Font("Verdana", 8, FontStyle.Regular), new SolidBrush(Color.Black), points[i].X, points[i].Y);
+            }
+        }
+
+
         int count = 0;
         private void buttonDraw_Click(object sender, EventArgs e)
         {
@@ -62,32 +119,39 @@ namespace Delaunay
             labelPuncte.Text = "";
             if (count <= 0)
             {
-                ZoomAll(points, 110f);
+                ZoomAll(this.points, 110f);
                 inSide = new PointF(inSide.X * 110, inSide.Y * 110);
                 count++;
             }
-          
-            
-          
+            List<PointF> points = this.points.ToList<PointF>();
+            points.Add(inSide);
+            Color[] colors = new Color[points.Count];
+            for (int i = 0; i < colors.Length; i++)
+                colors[i] = RandomColor();
+            DrawPoints(points);
+            Voronoi(points, colors);
 
-            PointF[] ex1 = new PointF[] {points[5],points[5],points[5],points[1],points[1],points[3] };
-            PointF[] ex2 = new PointF[] { inSide, points[1], points[3],inSide,points[3],inSide};
+
+            PointF[] ex1 = new PointF[] {points[5],points[0],points[4],points[2],points[1],points[3] };
+            PointF[] ex2 = new PointF[] { inSide, inSide, inSide,inSide,inSide,inSide};
             List<PointF[]> trigs = new List<PointF[]>();
-            trigs.Add(new PointF[] { points[0], points[1], points[5] });
+            trigs.Add(new PointF[] { points[0], inSide, points[1] });
+            trigs.Add(new PointF[] { points[0], inSide, points[5] });
             trigs.Add(new PointF[] { points[5], inSide, points[1] });
             trigs.Add(new PointF[] { points[5], points[3], inSide });
             trigs.Add(new PointF[] { points[5], points[4], points[3] });
             trigs.Add(new PointF[] { points[1], inSide, points[3] });
             trigs.Add(new PointF[] { points[1], points[2], points[3] });
          
-            FillTrig(trigs);
+           // FillTrig(trigs);
             NoteazaAll("ABCDEFG");
             grp.DrawString("G", new Font("Verdana", 10, FontStyle.Bold), new SolidBrush(Color.Black), inSide);
 
             Listeaza();
             labelPuncte.Text += $"G=({inSide.X},{inSide.Y})" + Environment.NewLine;
-            grp.DrawPolygon(new Pen(Color.Black), points);
+            grp.DrawPolygon(new Pen(Color.Black), this.points);
             DrawTrig(ex1, ex2, new Pen(Color.Black));
+          
             ReDraw();
          
             
